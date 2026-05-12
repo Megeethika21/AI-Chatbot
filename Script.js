@@ -1,14 +1,67 @@
+const sendBtn = document.getElementById("sendBtn");
+const userInput = document.getElementById("userInput");
+const chatBox = document.getElementById("chatBox");
+
+const API_KEY = "YOUR_GEMINI_API_KEY";
+
+sendBtn.addEventListener("click", sendMessage);
+
+userInput.addEventListener("keypress", function(event) {
+
+  if (event.key === "Enter") {
+    sendMessage();
+  }
+
+});
+
+async function sendMessage() {
+
+  const userText = userInput.value.trim();
+
+  if (userText === "") return;
+
+  addMessage(userText, "user-message");
+
+  userInput.value = "";
+
+  const loadingMessage = addMessage(
+    "Typing...",
+    "bot-message"
+  );
+
+  const botReply = await generateResponse(userText);
+
+  loadingMessage.textContent = botReply;
+}
+
+function addMessage(text, className) {
+
+  const messageDiv = document.createElement("div");
+
+  messageDiv.classList.add("message", className);
+
+  messageDiv.textContent = text;
+
+  chatBox.appendChild(messageDiv);
+
+  chatBox.scrollTop = chatBox.scrollHeight;
+
+  return messageDiv;
+}
+
 async function generateResponse(input) {
 
   try {
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${AIzaSyAnIAgE7T7K72FWQuNRhU5ObOedtkv2zTg}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
       {
         method: "POST",
+
         headers: {
           "Content-Type": "application/json"
         },
+
         body: JSON.stringify({
           contents: [
             {
@@ -27,7 +80,6 @@ async function generateResponse(input) {
 
     console.log(data);
 
-    // CHECK FOR API ERRORS
     if (data.error) {
       return data.error.message;
     }
