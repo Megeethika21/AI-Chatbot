@@ -54,7 +54,7 @@ async function generateResponse(input) {
   try {
 
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
       {
         method: "POST",
 
@@ -80,8 +80,17 @@ async function generateResponse(input) {
 
     console.log(data);
 
+    // HANDLE API ERRORS
     if (data.error) {
       return data.error.message;
+    }
+
+    // HANDLE EMPTY RESPONSE
+    if (
+      !data.candidates ||
+      !data.candidates[0].content.parts[0].text
+    ) {
+      return "No response generated.";
     }
 
     return data.candidates[0].content.parts[0].text;
