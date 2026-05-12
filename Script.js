@@ -2,31 +2,29 @@ const sendBtn = document.getElementById("sendBtn");
 const userInput = document.getElementById("userInput");
 const chatBox = document.getElementById("chatBox");
 
+const API_KEY = "AIzaSyAnIAgE7T7K72FWQuNRhU5ObOedtkv2zTg";
+
 sendBtn.addEventListener("click", sendMessage);
 
 userInput.addEventListener("keypress", function(event) {
-  if(event.key === "Enter") {
+  if (event.key === "Enter") {
     sendMessage();
   }
 });
 
-function sendMessage() {
+async function sendMessage() {
 
   const userText = userInput.value.trim();
 
-  if(userText === "") return;
+  if (userText === "") return;
 
   addMessage(userText, "user-message");
 
   userInput.value = "";
 
-  setTimeout(() => {
+  const botReply = await generateResponse(userText);
 
-    const botReply = generateResponse(userText);
-
-    addMessage(botReply, "bot-message");
-
-  }, 1000);
+  addMessage(botReply, "bot-message");
 }
 
 function addMessage(text, className) {
@@ -42,27 +40,41 @@ function addMessage(text, className) {
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-function generateResponse(input) {
+async function generateResponse(input) {
 
-  input = input.toLowerCase();
+  try {
 
-  if(input.includes("hello")) {
-    return "Hello 👋 Nice to meet you!";
-  }
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                {
+                  text: input
+                }
+              ]
+            }
+          ]
+        })
+      }
+    );
 
-  else if(input.includes("how are you")) {
-    return "I'm doing great 🚀";
-  }
+    const data = await response.json();
 
-  else if(input.includes("your name")) {
-    return "I'm your AI chatbot 🤖";
-  }
+    console.log(data);
 
-  else if(input.includes("bye")) {
-    return "Goodbye 👋 Have a nice day!";
-  }
+    return data.candidates[0].content.parts[0].text;
 
-  else {
-    return "Sorry 😅 I don't understand that yet.";
+  } catch (error) {
+
+    console.log(error);
+
+    return "Error generating response.";
   }
 }
