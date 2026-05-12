@@ -2,7 +2,7 @@ const sendBtn = document.getElementById("sendBtn");
 const userInput = document.getElementById("userInput");
 const chatBox = document.getElementById("chatBox");
 
-const API_KEY = "YOUR_GEMINI_API_KEY";
+const API_KEY = "AIzaSyAnIAgE7T7K72FWQuNRhU5ObOedtkv2zTg";
 
 sendBtn.addEventListener("click", sendMessage);
 
