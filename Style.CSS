@@ -6,29 +6,33 @@
 }
 
 body {
-  background: #0f172a;
+  background: #020b2d;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
 }
 
 .chat-container {
-  width: 400px;
-  height: 600px;
+  width: 420px;
+  height: 650px;
   background: #1e293b;
-  border-radius: 15px;
+  border-radius: 18px;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+  box-shadow: 0 5px 20px rgba(0,0,0,0.4);
 }
 
 .chat-header {
   background: #3b82f6;
   color: white;
-  padding: 20px;
   text-align: center;
+  padding: 25px;
+}
+
+.chat-header h1 {
+  font-size: 40px;
 }
 
 .chat-box {
@@ -38,10 +42,10 @@ body {
 }
 
 .message {
+  max-width: 80%;
   padding: 12px;
   margin-bottom: 15px;
-  border-radius: 10px;
-  max-width: 80%;
+  border-radius: 12px;
   word-wrap: break-word;
 }
 
@@ -68,16 +72,18 @@ body {
   border: none;
   border-radius: 8px;
   outline: none;
+  font-size: 16px;
 }
 
 .input-area button {
   margin-left: 10px;
-  padding: 12px 18px;
+  padding: 12px 20px;
   border: none;
+  border-radius: 8px;
   background: #3b82f6;
   color: white;
-  border-radius: 8px;
   cursor: pointer;
+  font-size: 16px;
 }
 
 .input-area button:hover {
